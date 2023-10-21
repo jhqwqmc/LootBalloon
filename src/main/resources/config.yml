@@ -1,0 +1,8 @@
+max-amount: 5
+min-amount: 1
+mob-name: 'LootBalloon'
+mob-move-speed: 0.5
+mob-death-sound: 'ENTITY_PLAYER_LEVELUP'
+chest-down-sound: 'ENTITY_PLAYER_LEVELUP'
+ia-block: 'blocks_expansion:balloon_crate'
+items: [ ]

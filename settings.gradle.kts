@@ -1,1 +1,1 @@
-rootProject.name = "EasyTemplate"
+rootProject.name = "LootBalloon"

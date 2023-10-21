@@ -5,7 +5,7 @@ plugins {
     kotlin("jvm") version "1.7.10"
 }
 
-group = "com.xbaimiao.template"
+group = "com.xbaimiao.lootballoon"
 version = "1.0.0"
 
 bukkit {
@@ -17,6 +17,10 @@ bukkit {
     )
     apiVersion = "1.13"
     foliaSupported = true
+    depend = listOf(
+        "MythicMobs",
+        "ItemsAdder"
+    )
 }
 
 repositories {
@@ -45,6 +49,9 @@ dependencies {
     // spigot
     compileOnly("org.spigotmc:spigot-api:1.18.2-R0.1-SNAPSHOT")
     compileOnly(fileTree("libs"))
+    compileOnly("public:ModelEngine:4.0.2")
+    compileOnly("public:MythicMobs:5.2.6")
+    compileOnly("public:ItemsAdder:3.6.1")
 }
 
 tasks.compileJava {
