@@ -35,13 +35,13 @@ repositories {
 
 dependencies {
     implementation(kotlin("stdlib-jdk8"))
-    implementation("com.xbaimiao:EasyLib:3.2.2")
+    implementation("com.xbaimiao:EasyLib:3.2.3")
     implementation("de.tr7zw:item-nbt-api:2.12.0")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
 
-//    implementation("om.zaxxer:HikariCP:4.0.3")
-//    implementation("com.j256.ormlite:ormlite-core:6.1")
-//    implementation("com.j256.ormlite:ormlite-jdbc:6.1")
+    implementation("com.zaxxer:HikariCP:4.0.3")
+    implementation("com.j256.ormlite:ormlite-core:6.1")
+    implementation("com.j256.ormlite:ormlite-jdbc:6.1")
 //    implementation("com.xbaimiao.ktor:ktor-plugins-bukkit:1.0.8")
 //    implementation("redis.clients:jedis:5.0.1")
     // paper

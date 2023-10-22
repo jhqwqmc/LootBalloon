@@ -1,8 +1,56 @@
-max-amount: 5
-min-amount: 1
-mob-name: 'LootBalloon'
-mob-move-speed: 0.5
-mob-death-sound: 'ENTITY_PLAYER_LEVELUP'
-chest-down-sound: 'ENTITY_PLAYER_LEVELUP'
-ia-block: 'blocks_expansion:balloon_crate'
-items: [ ]
+测试气球:
+  # 最大roll数量
+  max-amount: 5
+  # 最小roll数量
+  min-amount: 1
+  # 气球使用的mythicmob
+  mob-name: 'LootBalloon'
+  # 气球掉落的时候使用的mythicmob
+  mob-chest-name: 'LootBalloon-Chest'
+  # 气球的移动速度
+  mob-move-speed: 0.2
+  # 气球被击落时的音效
+  mob-death-sound: 'custom:music.chatroom_enter'
+  # 气球落地时的音效
+  chest-down-sound: 'custom:music.chatroom_exit'
+  # 气球落地使用的方块
+  ia-block: 'blocks_expansion:balloon_crate'
+  # 刷新的世界
+  worlds:
+    - 'world'
+  # 刷新时间
+  time: '13:00-18:00'
+  # 每个玩家刷新最大次数
+  max-amount-per-player: 4
+  # 刷新几率
+  refresh-probability: 0.5
+  # 气球掉落的战利品 使用命令 /lootballoon edit <气球名字> 来编辑
+  items: [ ]
+
+
+# 以下为MythicMobs的配置文件
+#LootBalloon:
+#  Type: pig
+#  Display: '幸运气球'
+#  Damage: 0
+#  Health: 10
+#  AIGoalSelectors:
+#    - clear
+#    # 使用内置气球AI 在天上随机直线漂浮
+#    - lootballoon
+#  Options:
+#    PreventSunburn: true
+#    NoGravity: true
+#    Silent: true
+#  Skills:
+#    # 为气球套上模型
+#    - model{mid=hotballoon_orange;n=false} @self ~onSpawn
+#LootBalloon-Chest:
+#  Type: armor_stand
+#  Display: '幸运气球箱子'
+#  Health: 200
+#  Options:
+#    Invincible: true
+#  Skills:
+#    # 为气球掉落物套上模型
+#    - model{mid=balloon_crate_1;n=false} @self ~onSpawn

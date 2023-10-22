@@ -1,6 +1,5 @@
 package com.xbaimiao.lootballoon.ai
 
-import com.xbaimiao.lootballoon.LootBalloonConfig
 import io.lumine.mythic.api.adapters.AbstractEntity
 import io.lumine.mythic.api.config.MythicLineConfig
 import io.lumine.mythic.bukkit.BukkitAdapter
@@ -53,7 +52,12 @@ class LootBalloonAI(
         // 距离
         val distanceSquared = posB.toVector().distanceSquared(now)
 
-        val moveSpeed = LootBalloonConfig.mobMoveSpeed.toFloat()
+        val bukkitEntity = activeMob.entity.bukkitEntity
+        val moveSpeed = if (bukkitEntity.hasMetadata("LootBalloonMoveSpeed")) {
+            bukkitEntity.getMetadata("LootBalloonMoveSpeed")[0].asFloat()
+        } else {
+            0.2f
+        }
 
         if (distanceSquared < moveSpeed) {
             // 到达终点
