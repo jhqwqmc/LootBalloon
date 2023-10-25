@@ -23,6 +23,8 @@ class LootBalloon : EasyPlugin() {
     companion object {
         @JvmStatic
         val inst get() = plugin as LootBalloon
+
+        private const val probabilitySpit = "<<<<<>>>>>"
     }
 
     val balloonList = ArrayList<Balloon>()
@@ -48,16 +50,33 @@ class LootBalloon : EasyPlugin() {
             val mobChestName = config.getString(path + "mob-chest-name")!!
             val mobMoveSpeed = config.getString(path + "mob-move-speed")!!
             val iaBlock = config.getString(path + "ia-block")!!
-            val items = config.getStringList(path + "items")
+            val items = config.getStringList(path + "items").associate {
+                val split = it.split(probabilitySpit)
+                split[0].toDouble() to split[1]
+            }
             val worlds = config.getStringList(path + "worlds")
             val time = config.getString(path + "time", "00:00-24:00")!!.split("-").let {
                 LocalTime.parse(it[0]) to LocalTime.parse(it[1])
             }
             val maxAmountPerPlayer = config.getInt(path + "max-amount-per-player")
             val probability = config.getDouble(path + "refresh-probability", 0.3)
-            val height = config.getInt(path + "height", 20)
+            val height = config.getDouble(path + "height", 20.0)
             balloonList.add(Balloon(
-                name, maxAmount, minAmount, mobName, mobDeathSound, chestDownSound, mobChestName, mobMoveSpeed, iaBlock, worlds, time, maxAmountPerPlayer, probability, items
+                name,
+                maxAmount,
+                minAmount,
+                mobName,
+                mobDeathSound,
+                chestDownSound,
+                mobChestName,
+                mobMoveSpeed,
+                iaBlock,
+                worlds,
+                time,
+                maxAmountPerPlayer,
+                probability,
+                height,
+                items
             ).also {
                 info("§a加载气球 $name")
             })
@@ -70,7 +89,7 @@ class LootBalloon : EasyPlugin() {
         basic.rows(6)
         basic.handLocked(false)
 
-        balloon.items.withIndex().forEach { (index, item) ->
+        balloon.items.values.withIndex().forEach { (index, item) ->
             if (index > 53) {
                 return@forEach
             }
@@ -78,8 +97,13 @@ class LootBalloon : EasyPlugin() {
         }
 
         basic.onClose { event ->
-            balloon.items = ArrayList(event.inventory.contents.filter { it.isNotAir() }.map { NBTItem.convertItemtoNBT(it).toString() })
-            config.set("${balloon.name}.items", balloon.items)
+            val newItems = HashMap<Double, String>()
+            for (s in event.inventory.contents.filter { it.isNotAir() }.map { NBTItem.convertItemtoNBT(it).toString() }) {
+                val probability = balloon.items.filterValues { it == s }.keys.firstOrNull() ?: 1.0
+                newItems[probability] = s
+            }
+            balloon.items = newItems
+            config.set("${balloon.name}.items", balloon.items.map { "${it.key}$probabilitySpit${it.value}" })
             saveConfig()
             player.sendMessage("§c编辑成功")
         }

@@ -30,17 +30,18 @@ class Balloon(
     val name: String,
     private val maxAmount: Int,
     private val minAmount: Int,
-    val mobName: String,
+    internal val mobName: String,
     private val mobDeathSound: String,
     private val chestDownSound: String,
     private val mobChestName: String,
     private val mobMoveSpeed: String,
-    val iaBlock: String,
+    internal val iaBlock: String,
     private val worlds: List<String>,
     private val time: Pair<LocalTime, LocalTime>,
     private val maxAmountPerPlayer: Int,
     private val probability: Double,
-    var items: List<String>
+    internal val height: Double,
+    internal var items: Map<Double, String>
 ) {
 
     suspend fun refresh(player: Player): Boolean = suspendCoroutine {
@@ -65,7 +66,7 @@ class Balloon(
                 it.resume(false)
                 return@launchCoroutine
             }
-            summon(player.location.clone().also { it.y += 30 })
+            summon(player.location.clone().also { it.y += height })
             async {
                 LootBalloon.inst.database.addTodayCount(player.name, this@Balloon)
             }
@@ -96,11 +97,22 @@ class Balloon(
         val result = HashSet<String>()
         val amount = (minAmount..maxAmount).random()
         repeat(amount) {
-            result.add(items.random())
+            result.add(rollItem())
         }
         return result.map { NBTItem.convertNBTtoItem(NBTContainer(it))!! }
     }
 
+    private fun rollItem(deep: Int = 0): String {
+        if (deep > 10) {
+            return items.values.random()
+        }
+        for ((probability, item) in items) {
+            if (Math.random() < probability) {
+                return item
+            }
+        }
+        return rollItem(deep + 1)
+    }
 
     private fun down(location: Location) {
         val entity = MythicBukkit.inst().mobManager.getMythicMob(mobChestName).getOrNull()

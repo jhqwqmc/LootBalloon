@@ -50,7 +50,7 @@ object LootBalloonCommands {
                 sender.sendMessage("§c召唤失败, 未找到气球 ${balloonArg.argString()}")
                 return@exec
             }
-            balloon.summon(sender.location.also { it.y += 30.0 })
+            balloon.summon(sender.location.also { it.y += balloon.height })
         }
     }
 
