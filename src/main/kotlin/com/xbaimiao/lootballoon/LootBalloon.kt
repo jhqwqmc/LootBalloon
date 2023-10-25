@@ -55,6 +55,7 @@ class LootBalloon : EasyPlugin() {
             }
             val maxAmountPerPlayer = config.getInt(path + "max-amount-per-player")
             val probability = config.getDouble(path + "refresh-probability", 0.3)
+            val height = config.getInt(path + "height", 20)
             balloonList.add(Balloon(
                 name, maxAmount, minAmount, mobName, mobDeathSound, chestDownSound, mobChestName, mobMoveSpeed, iaBlock, worlds, time, maxAmountPerPlayer, probability, items
             ).also {

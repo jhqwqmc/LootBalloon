@@ -3,6 +3,8 @@
   max-amount: 5
   # 最小roll数量
   min-amount: 1
+  # 气球刷新高度 在玩家当前位置 y 轴加上这个值
+  height: 20
   # 气球使用的mythicmob
   mob-name: 'LootBalloon'
   # 气球掉落的时候使用的mythicmob
