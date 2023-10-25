@@ -52,7 +52,7 @@ class LootBalloon : EasyPlugin() {
             val iaBlock = config.getString(path + "ia-block")!!
             val items = config.getStringList(path + "items").associate {
                 val split = it.split(probabilitySpit)
-                split[0].toDouble() to split[1]
+                split[0].toDouble() to split[1].fromBase64()
             }
             val worlds = config.getStringList(path + "worlds")
             val time = config.getString(path + "time", "00:00-24:00")!!.split("-").let {
@@ -103,12 +103,20 @@ class LootBalloon : EasyPlugin() {
                 newItems[probability] = s
             }
             balloon.items = newItems
-            config.set("${balloon.name}.items", balloon.items.map { "${it.key}$probabilitySpit${it.value}" })
+            config.set("${balloon.name}.items", balloon.items.map { "${it.key}$probabilitySpit${it.value.toBase64()}" })
             saveConfig()
             player.sendMessage("§c编辑成功")
         }
 
         basic.open()
+    }
+
+    private fun String.toBase64(): String {
+        return java.util.Base64.getEncoder().encodeToString(toByteArray())
+    }
+
+    private fun String.fromBase64(): String {
+        return String(java.util.Base64.getDecoder().decode(this))
     }
 
 }
