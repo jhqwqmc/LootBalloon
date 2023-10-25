@@ -52,7 +52,7 @@ class Balloon(
                 it.resume(false)
                 return@launchCoroutine
             }
-            if (player.world.name !in worlds) {
+            if (player.world.name in worlds) {
                 it.resume(false)
                 return@launchCoroutine
             }

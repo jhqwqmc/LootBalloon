@@ -15,7 +15,7 @@
   chest-down-sound: 'custom:music.chatroom_exit'
   # 气球落地使用的方块
   ia-block: 'blocks_expansion:balloon_crate'
-  # 刷新的世界
+  # 刷新的世界黑名单
   worlds:
     - 'world'
   # 刷新时间

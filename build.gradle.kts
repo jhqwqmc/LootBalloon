@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "com.xbaimiao.lootballoon"
-version = "1.0.0"
+version = "1.0.1"
 
 bukkit {
     name = project.name
