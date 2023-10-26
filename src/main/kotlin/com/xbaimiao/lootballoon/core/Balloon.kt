@@ -126,7 +126,7 @@ class Balloon(
 
         val done = {
             chestDownSound.parseToESound().playSound(location)
-            place(bukkitEntity.location)
+            place(bukkitEntity.location.clone())
             bukkitEntity.location.chunk.removePluginChunkTicket(plugin)
             bukkitEntity.remove()
         }
@@ -147,6 +147,9 @@ class Balloon(
     }
 
     private fun place(location: Location) {
+        if (!location.block.type.isAir) {
+            location.add(0.0, 1.0, 0.0)
+        }
         val block = CustomBlock.place(iaBlock, location)
         if (block == null) {
             warn("$iaBlock place block failed")
@@ -155,17 +158,7 @@ class Balloon(
     }
 
     override fun toString(): String {
-        return "Balloon(" +
-                "name='$name', " +
-                "maxAmount=$maxAmount, " +
-                "minAmount=$minAmount, " +
-                "mobName='$mobName', " +
-                "mobMoveSpeed='$mobMoveSpeed', " +
-                "iaBlock='$iaBlock', " +
-                "worlds=$worlds, " +
-                "time=$time, " +
-                "maxAmountPerPlayer=$maxAmountPerPlayer" +
-                ")"
+        return "Balloon(name='$name', maxAmount=$maxAmount, minAmount=$minAmount, mobName='$mobName', mobMoveSpeed='$mobMoveSpeed', iaBlock='$iaBlock', worlds=$worlds, time=$time, maxAmountPerPlayer=$maxAmountPerPlayer)"
     }
 
 }
