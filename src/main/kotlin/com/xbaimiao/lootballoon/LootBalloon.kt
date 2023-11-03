@@ -50,7 +50,7 @@ class LootBalloon : EasyPlugin() {
             val mobChestName = config.getString(path + "mob-chest-name")!!
             val mobMoveSpeed = config.getString(path + "mob-move-speed")!!
             val iaBlock = config.getString(path + "ia-block")!!
-            val items = config.getStringList(path + "items").associate {
+            val items = config.getStringList(path + "items").map {
                 val split = it.split(probabilitySpit)
                 split[0].toDouble() to split[1].fromBase64()
             }
@@ -89,21 +89,21 @@ class LootBalloon : EasyPlugin() {
         basic.rows(6)
         basic.handLocked(false)
 
-        balloon.items.values.withIndex().forEach { (index, item) ->
+        balloon.items.withIndex().forEach { (index, item) ->
             if (index > 53) {
                 return@forEach
             }
-            basic.set(index, NBTItem.convertNBTtoItem(NBTContainer(item))!!)
+            basic.set(index, NBTItem.convertNBTtoItem(NBTContainer(item.second))!!)
         }
 
         basic.onClose { event ->
-            val newItems = HashMap<Double, String>()
+            val newItems = ArrayList<Pair<Double, String>>()
             for (s in event.inventory.contents.filter { it.isNotAir() }.map { NBTItem.convertItemtoNBT(it).toString() }) {
-                val probability = balloon.items.filterValues { it == s }.keys.firstOrNull() ?: 1.0
-                newItems[probability] = s
+                val probability = balloon.items.find { it.second == s }?.first ?: 1.0
+                newItems.add(probability to s)
             }
             balloon.items = newItems
-            config.set("${balloon.name}.items", balloon.items.map { "${it.key}$probabilitySpit${it.value.toBase64()}" })
+            config.set("${balloon.name}.items", balloon.items.map { "${it.first}$probabilitySpit${it.second.toBase64()}" })
             saveConfig()
             player.sendMessage("§c编辑成功")
         }

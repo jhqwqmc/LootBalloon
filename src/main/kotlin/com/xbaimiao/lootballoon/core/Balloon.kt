@@ -41,7 +41,7 @@ class Balloon(
     private val maxAmountPerPlayer: Int,
     private val probability: Double,
     internal val height: Double,
-    internal var items: Map<Double, String>
+    internal var items: List<Pair<Double, String>>
 ) {
 
     suspend fun refresh(player: Player): Boolean = suspendCoroutine {
@@ -104,7 +104,7 @@ class Balloon(
 
     private fun rollItem(deep: Int = 0): String {
         if (deep > 10) {
-            return items.values.random()
+            return items.random().second
         }
         for ((probability, item) in items) {
             if (Math.random() < probability) {
