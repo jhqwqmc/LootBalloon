@@ -28,7 +28,17 @@
   refresh-probability: 0.5
   # 气球掉落的战利品 使用命令 /lootballoon edit <气球名字> 来编辑
   items: [ ]
-
+  # 是否刷新时暴露坐标
+  expose-location: true
+  # 暴露坐标时是否可以点击传送
+  click-teleport: true
+  # 暴露坐标时的提示信息
+  expose-location-message: '&a气球刷新坐标: &e{location}'
+  # 暴露坐标时点击传送的消息
+  click-teleport-message: ' &7[&a点击传送到气球刷新坐标&7]'
+  click-teleport-hover: '点击传送'
+  # 传送时与刷新坐标的 XY轴随机偏移数量
+  teleport-offset: 150
 
 # 以下为MythicMobs的配置文件
 #LootBalloon:

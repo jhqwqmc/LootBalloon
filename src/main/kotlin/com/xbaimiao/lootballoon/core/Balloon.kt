@@ -1,6 +1,8 @@
 package com.xbaimiao.lootballoon.core
 
 import com.xbaimiao.easylib.bridge.player.parseToESound
+import com.xbaimiao.easylib.chat.TellrawJson
+import com.xbaimiao.easylib.chat.colored
 import com.xbaimiao.easylib.skedule.launchCoroutine
 import com.xbaimiao.easylib.util.getOrNull
 import com.xbaimiao.easylib.util.plugin
@@ -41,7 +43,16 @@ class Balloon(
     private val maxAmountPerPlayer: Int,
     private val probability: Double,
     internal val height: Double,
-    internal var items: List<Pair<Double, String>>
+    internal var items: List<Pair<Double, String>>,
+    // 是否暴露坐标
+    private val exposeLocation: Boolean,
+    // 暴露坐标时是否可以点击传送
+    private val clickTeleport: Boolean,
+    // 传送时偏移量
+    val teleportOffset: Int,
+    private val exposeLocationMessage: String,
+    private val clickTeleportMessage: String,
+    private val clickTeleportHover: String,
 ) {
 
     suspend fun refresh(player: Player): Boolean = suspendCoroutine {
@@ -82,6 +93,22 @@ class Balloon(
         }
         mythicMob.spawn(BukkitAdapter.adapt(location), 1.0).also {
             it.entity.bukkitEntity.setMetadata("LootBalloonMoveSpeed", FixedMetadataValue(plugin, mobMoveSpeed))
+        }
+        if (exposeLocation) {
+            val locationMessage = "${location.world!!.name},${location.blockX},${location.blockY},${location.blockZ}"
+            val rawMessage = exposeLocationMessage.replace("{location}", locationMessage).colored()
+            TellrawJson().broadcast {
+                append(rawMessage)
+                if (clickTeleport) {
+                    val token = BalloonTeleport.cache(this@Balloon, location.clone())
+                    append(
+                        TellrawJson()
+                            .append(clickTeleportMessage.colored())
+                            .runCommand("/lootballoon api teleport|$token")
+                            .hoverText(clickTeleportHover.colored())
+                    )
+                }
+            }
         }
     }
 

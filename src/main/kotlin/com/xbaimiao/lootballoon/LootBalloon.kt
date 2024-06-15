@@ -61,6 +61,12 @@ class LootBalloon : EasyPlugin() {
             val maxAmountPerPlayer = config.getInt(path + "max-amount-per-player")
             val probability = config.getDouble(path + "refresh-probability", 0.3)
             val height = config.getDouble(path + "height", 20.0)
+            val exposeLocation = config.getBoolean(path + "expose-location")
+            val clickTeleport = config.getBoolean(path + "click-teleport")
+            val exposeLocationMessage = config.getString(path + "expose-location-message", "")!!
+            val clickTeleportMessage = config.getString(path + "click-teleport-message", "")!!
+            val clickTeleportHover = config.getString(path + "click-teleport-hover", "")!!
+            val teleportOffset = config.getInt(path + "teleport-offset", 1)
             balloonList.add(Balloon(
                 name,
                 maxAmount,
@@ -76,7 +82,13 @@ class LootBalloon : EasyPlugin() {
                 maxAmountPerPlayer,
                 probability,
                 height,
-                items
+                items,
+                exposeLocation,
+                clickTeleport,
+                teleportOffset,
+                exposeLocationMessage,
+                clickTeleportMessage,
+                clickTeleportHover
             ).also {
                 info("§a加载气球 $name")
             })
@@ -98,12 +110,15 @@ class LootBalloon : EasyPlugin() {
 
         basic.onClose { event ->
             val newItems = ArrayList<Pair<Double, String>>()
-            for (s in event.inventory.contents.filter { it.isNotAir() }.map { NBTItem.convertItemtoNBT(it).toString() }) {
+            for (s in event.inventory.contents.filter { it.isNotAir() }
+                .map { NBTItem.convertItemtoNBT(it).toString() }) {
                 val probability = balloon.items.find { it.second == s }?.first ?: 1.0
                 newItems.add(probability to s)
             }
             balloon.items = newItems
-            config.set("${balloon.name}.items", balloon.items.map { "${it.first}$probabilitySpit${it.second.toBase64()}" })
+            config.set(
+                "${balloon.name}.items",
+                balloon.items.map { "${it.first}$probabilitySpit${it.second.toBase64()}" })
             saveConfig()
             player.sendMessage("§c编辑成功")
         }

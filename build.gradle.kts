@@ -1,27 +1,11 @@
 plugins {
     java
     id("com.github.johnrengelman.shadow") version ("7.1.2")
-    id("net.minecrell.plugin-yml.bukkit") version "0.6.0"
     kotlin("jvm") version "1.7.10"
 }
 
 group = "com.xbaimiao.lootballoon"
-version = "1.0.2"
-
-bukkit {
-    name = project.name
-    main = "${project.group}.${project.name}"
-    version = project.version.toString()
-    authors = listOf(
-        "xbaimiao"
-    )
-    apiVersion = "1.13"
-    foliaSupported = true
-    depend = listOf(
-        "MythicMobs",
-        "ItemsAdder"
-    )
-}
+version = "1.0.3"
 
 repositories {
     mavenLocal()

@@ -1,0 +1,3 @@
+error-api: "&c未知api接口"
+error-api-token: '&c位置已过期'
+teleport-success: '&a传送成功'
