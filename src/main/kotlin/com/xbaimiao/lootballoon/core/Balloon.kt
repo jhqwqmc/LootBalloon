@@ -133,7 +133,7 @@ class Balloon(
         if (deep > 10) {
             return items.random().second
         }
-        for ((probability, item) in items) {
+        for ((probability, item) in items.shuffled()) {
             if (Math.random() < probability) {
                 return item
             }

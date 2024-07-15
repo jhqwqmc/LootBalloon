@@ -1,5 +1,5 @@
 name: LootBalloon
-version: 1.0.3
+version: 1.0.4
 main: com.xbaimiao.lootballoon.LootBalloon
 authors:
   - xbaimiao
@@ -8,4 +8,4 @@ depend:
   - ItemsAdder
 api-version: "1.13"
 folia-supported: true
-update-info: "更新气球刷新坐标暴露和点击传送功能（可选开启）"
+update-info: "优化Roll逻辑"
